@@ -4,7 +4,7 @@ this is app helps to choose an insurance plan right for you.
 
 example format of `data.csv`
 
-|unit|plan                         |cost  |network                                      |deductible|oop_max|coins|copay_primary|copay_special|copay_urgent|copay_er|
+|unit|plan                         |cost  |network                                      |deductible|oop_max|coins|copay_primary|copay_specialist|copay_urgent|copay_er|
 |----|-----------------------------|------|---------------------------------------------|----------|-------|-----|-------------|-------------|------------|--------|
 |Individual|X                            |46.8  |In-Network                                   |340       |1340   |0.9  |71           |89           |34          |21      |
 |Individual|Y                            |96.84 |In-Network                                   |718       |1718   |0.6  |47           |63           |12          |43      |
