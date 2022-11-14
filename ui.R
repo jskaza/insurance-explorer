@@ -11,19 +11,19 @@ fluidPage(sidebarLayout(
                    "Family")),
     
     h3("Preventative Care Costs"),
-    sliderInput(
-      "cost_preventative_in",
-      "In-Network:",
-      min = 0,
-      max = 500000,
-      value = 0
-    ),
+    # sliderInput(
+    #   "cost_preventative_in",
+    #   "In-Network:",
+    #   min = 0,
+    #   max = 5000,
+    #   value = 0
+    # ),
     
     sliderInput(
       "cost_preventative_oon",
       "OON:",
       min = 0,
-      max = 500000,
+      max = 5000,
       value = 0
     ),
     

@@ -83,24 +83,52 @@ function(input, output) {
       mutate(network = fct_recode(network,
                                   "In-Network" = "in",
                                   "OON" = "oon")) %>%
-      # deal with urgent care oon copay
-      full_join(unit_choice())
-    
-    
+      full_join(unit_choice(), by = c("unit", "network"))
     
     deductible <- df %>%
       filter(input_type == "cost") %>%
-      mutate(copay = 
-               (location =="primary" && !is.na(copay_primary) ||
-                   location =="specialist" && !is.na(copay_specialist) ||
-                   location =="urgent" && !is.na(copay_urgent) ||
-                   location =="er" && !is.na(copay_er))
-                   )
- 
-      
-      # group_by(network) %>%
-      # summarise(cost = sum(value))
-    # unit_choice()
+      mutate(
+        copay = copay_eligible(
+          location,
+          copay_primary,
+          copay_specialist,
+          copay_urgent,
+          copay_er,
+          copay_preventative
+        )
+      ) %>%
+      filter(!copay) %>%
+      group_by(network, plan, deductible, coins, oop_max) %>%
+      summarise(total = sum(value),) %>%
+      mutate(total = you_pay(total, deductible, coins, oop_max))
+    
+    
+    # copays <- df %>%
+    #   filter(input_type == "n") %>%
+    #   mutate(
+    #     copay = copay_eligible(
+    #       location,
+    #       copay_primary,
+    #       copay_specialist,
+    #       copay_urgent,
+    #       copay_er,
+    #       copay_preventative
+    #     )
+    #   ) %>%
+    # filter(copay) %>%
+    # mutate(
+    #   copay_cost = calc_copay(
+    #     location,
+    #     value,
+    #     copay_primary,
+    #     copay_specialist,
+    #     copay_urgent,
+    #     copay_er,
+    #     copay_preventative
+    #   )
+    # ) %>%
+    # group_by(plan) %>%
+    # summarise(total = sum(copay_cost))
   })
   
   
