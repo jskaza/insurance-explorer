@@ -76,16 +76,13 @@ function(input, output) {
   })
   
   # estimate annual oop cost based on selections
-  output$txt <- renderTable({
-    df <-
+  output$deductible <- renderTable({
       melt(as.data.frame(reactiveValuesToList(input)), id = "unit") %>%
       separate(variable, c("input_type", "location", "network")) %>%
       mutate(network = fct_recode(network,
                                   "In-Network" = "in",
                                   "OON" = "oon")) %>%
-      full_join(unit_choice(), by = c("unit", "network"))
-    
-    deductible <- df %>%
+      full_join(unit_choice(), by = c("unit", "network")) %>%
       filter(input_type == "cost") %>%
       mutate(
         copay = copay_eligible(
@@ -101,35 +98,43 @@ function(input, output) {
       group_by(network, plan, deductible, coins, oop_max) %>%
       summarise(total = sum(value),) %>%
       mutate(total = you_pay(total, deductible, coins, oop_max))
-    
-    
-    # copays <- df %>%
-    #   filter(input_type == "n") %>%
-    #   mutate(
-    #     copay = copay_eligible(
-    #       location,
-    #       copay_primary,
-    #       copay_specialist,
-    #       copay_urgent,
-    #       copay_er,
-    #       copay_preventative
-    #     )
-    #   ) %>%
-    # filter(copay) %>%
-    # mutate(
-    #   copay_cost = calc_copay(
-    #     location,
-    #     value,
-    #     copay_primary,
-    #     copay_specialist,
-    #     copay_urgent,
-    #     copay_er,
-    #     copay_preventative
-    #   )
-    # ) %>%
-    # group_by(plan) %>%
-    # summarise(total = sum(copay_cost))
   })
+  
+  output$copay <- renderTable({
+    melt(as.data.frame(reactiveValuesToList(input)), id = "unit") %>%
+      separate(variable, c("input_type", "location", "network")) %>%
+      mutate(network = fct_recode(network,
+                                  "In-Network" = "in",
+                                  "OON" = "oon")) %>%
+      full_join(unit_choice(), by = c("unit", "network")) %>%
+      filter(input_type == "n") %>%
+      mutate(
+        copay = copay_eligible(
+          location,
+          copay_primary,
+          copay_specialist,
+          copay_urgent,
+          copay_er,
+          copay_preventative
+        )
+      ) %>%
+    filter(copay) %>%
+    mutate(
+      copay_cost = calc_copay(
+        location,
+        value,
+        copay_primary,
+        copay_specialist,
+        copay_urgent,
+        copay_er,
+        copay_preventative
+      )
+    ) %>%
+    group_by(plan) %>%
+    summarise(total = sum(copay_cost))
+      
+  })
+  
   
   
   

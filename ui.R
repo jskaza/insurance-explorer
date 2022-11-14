@@ -201,7 +201,9 @@ fluidPage(sidebarLayout(
     )
   ),
   mainPanel(tabsetPanel(
-    tabPanel("Cost Comparison", tableOutput("txt")),
+    tabPanel("Cost Comparison", 
+             tableOutput("copay"),
+             tableOutput("deductible")),
     tabPanel("Charts",
              plotOutput("plans"),
              plotOutput("lines")),
