@@ -2,18 +2,14 @@ library(shiny)
 
 fluidPage(sidebarLayout(
   sidebarPanel(
-    h3("Unit"),
     radioButtons("unit",
-                 NULL,
-                 c("Individual",
-                   # "Employee + Spouse",
-                   # "Employee + Child(ren)",
-                   "Family")),
+                 "Plan Type",
+                 unique(plans$unit)),
     
-    h3("Preventative Care Costs"),
+    h4("Preventative Care Costs"),
     # sliderInput(
     #   "cost_preventative_in",
-    #   "In-Network:",
+    #   "In-Network",
     #   min = 0,
     #   max = 5000,
     #   value = 0
@@ -21,189 +17,190 @@ fluidPage(sidebarLayout(
     
     sliderInput(
       "cost_preventative_oon",
-      "OON:",
+      "OON",
       min = 0,
-      max = 5000,
+      max = 10000,
       value = 0
     ),
     
     
-    h3("Primary Care"),
+    h4("Primary Care"),
     sliderInput(
       "cost_primary_in",
-      "In-Network Costs:",
+      "In-Network Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "n_primary_in",
-      "In-Network Visits:",
+      "In-Network Visits",
       min = 0,
       max = 50,
       value = 0
     ),
     sliderInput(
       "cost_primary_oon",
-      "OON Cost:",
+      "OON Cost",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Specialists"),
+    h4("Specialists"),
     sliderInput(
       "cost_specialist_in",
-      "In-Network Costs:",
+      "In-Network Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "n_specialist_in",
-      "In-Network Visits:",
+      "In-Network Visits",
       min = 0,
       max = 50,
       value = 0
     ),
     sliderInput(
       "cost_specialist_oon",
-      "OON Costs:",
+      "OON Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Virtual Care Costs"),
+    h4("Virtual Care Costs"),
     sliderInput(
       "cost_virtual_in",
-      "In-Network:",
+      "In-Network",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "cost_virtual_oon",
-      "OON:",
+      "OON",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Urgent Care"),
+    h4("Urgent Care"),
     sliderInput(
       "cost_urgent_in",
-      "In-Network Costs:",
+      "In-Network Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "n_urgent_in",
-      "In-Network Visits:",
+      "In-Network Visits",
       min = 0,
       max = 50,
       value = 0
     ),
     sliderInput(
       "cost_urgent_oon",
-      "OON Costs:",
+      "OON Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Emergency Room"),
+    h4("Emergency Room"),
     sliderInput(
       "cost_er_in",
-      "In-Network Costs:",
+      "In-Network Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "n_er_in",
-      "In-Network Visits:",
+      "In-Network Visits",
       min = 0,
       max = 50,
       value = 0
     ),
     sliderInput(
-      "n_er_oon",
-      "OON Costs:",
+      "cost_er_oon",
+      "OON Costs",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Diagnostic Procedure Costs"),
+    h4("Diagnostic Procedure Costs"),
     sliderInput(
       "cost_diagnostics_in",
       NULL,
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "cost_diagnostics_oon",
       NULL,
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("MRI/MRA, CT/PET Costs"),
+    h4("MRI/MRA, CT/PET Costs"),
     sliderInput(
       "cost_scans_in",
-      "In-Network:",
+      "In-Network",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "cost_scans_oon",
-      "OON:",
+      "OON",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Inpatient Stay Costs"),
+    h4("Inpatient Stay Costs"),
     sliderInput(
       "cost_ip_in",
-      "In-Network:",
+      "In-Network",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "cost_ip_oon",
-      "OON:",
+      "OON",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     
-    h3("Outpatient Surgery Costs"),
+    h4("Outpatient Surgery Costs"),
     sliderInput(
       "cost_op_in",
-      "In-Network:",
+      "In-Network",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     ),
     sliderInput(
       "cost_op_oon",
-      "OON:",
+      "OON",
       min = 0,
-      max = 500000,
+      max = 10000,
       value = 0
     )
   ),
   mainPanel(tabsetPanel(
-    tabPanel("Cost Comparison", 
-             tableOutput("copay"),
-             tableOutput("deductible")),
+    tabPanel(
+      "Cost Comparison",
+      dataTableOutput("oop")
+    ),
     tabPanel("Charts",
              plotOutput("plans"),
              plotOutput("lines")),
