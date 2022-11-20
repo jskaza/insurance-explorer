@@ -38,8 +38,10 @@ function(input, output) {
   output$lines <- renderPlot({
     df <- unit_choice() |>
       group_by(plan, network) |>
-      filter(row_number() == 1) |>
+      filter(service == "ip") |>
       ungroup()
+    
+    print(df)
     
     asymptotes <- pmap(list(
       d = df$deductible,
@@ -48,7 +50,7 @@ function(input, output) {
     ),
     asymptote_point) |> unlist()
     
-    x <- c(0, 35000, df$deductible, asymptotes) |>
+    x <- c(0, 50000, df$deductible, asymptotes) |>
       unique() |>
       rep(each = nrow(df)) |>
       sort()
